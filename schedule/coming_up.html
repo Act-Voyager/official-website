@@ -1,0 +1,62 @@
+<HTML>
+<HEAD>
+<TITLE>Hello YAPC-NA</TITLE>
+<META HTTP-EQUIV="Author" CONTENT="John Doe">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="refresh" content="150">
+
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script>
+
+$( document ).ready(function() {
+    $( "p" ).html( "Powered by Act-Voyager REST api...<BR>point your browsers at<br><h2>http://act-voyager.org</h2>" );
+    $.getJSON( "http://voyager.perlworkshop.eu/api/yapc_europe/2015/schedule/coming_up", function( data ) {
+        var items = [];
+        var sorted_keys = data.sort(
+            function(a, b) {
+                return a.start_time.localeCompare(b.start_time) || a.room.localeCompare(b.room)
+            }
+        )
+        $.each( sorted_keys, function( key, val ) {
+<!--         $.each( data, function( key, val ) { -->
+            items.push( "<div id='" + key + "' data-role='collapsible' data-inset='false'>");
+            
+            items.push( "<h3>");
+            items.push( val.start_time.substring(11, 16) );
+            items.push( "&nbsp;")
+            if        (val.room == "r2") { items.push( "Salon de Grados");
+            } else if (val.room == "r3") { items.push( "Aula F2");
+            } else if (val.room == "r4") { items.push( "Aula F1");
+            } else if (val.room == "r5") { items.push( "Aula Magna");
+            };
+            items.push( "</h3>");
+            
+            items.push( "<h2>");
+            items.push( "" + val.label + "" );
+            items.push( "</h2>");
+            
+            items.push( "<p>");
+            items.push( "</div>" );
+            items.push( "<hr>" );
+        });
+        
+        $( "<div/>", { "class": "ui-content", html: items.join( "" ) }).appendTo( ".ui-page" );
+    });
+});
+
+</script>
+
+</HEAD>
+<BODY>
+    <div data-role="header">
+        <h1>Upcoming </h1>
+    </div>
+
+
+    <p>Give me a second....</p>
+
+</BODY>
+</HTML>
+
